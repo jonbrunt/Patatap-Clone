@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Rotating Shapes</title>
+	<link rel="stylesheet" type="text/css" href="Assets/CSS/Shapes.css">
+	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/howler/2.0.4/howler.js"></script>
+	<script type="text/javascript" src="Assets/JS/lib/paper-full.js"></script>
+	<script type="text/paperscript" canvas="myCanvas">
+
+		var keyData = {
+		
+			q: {
+		  		urls: 'sounds/bubbles.mp3',
+				color: '#1abc9c'
+			},
+			w: {
+		  		urls: 'sounds/clay.mp3',
+				color: '#2ecc71'
+			},
+			e: {
+		  		urls: 'sounds/confetti.mp3',
+				color: '#3498db'
+			},
+			r: {
+		  		urls: 'sounds/corona.mp3',
+				color: '#9b59b6'
+			},
+			t: {
+		  		urls: 'sounds/dotted-spiral.mp3',
+				color: '#34495e'
+			},
+			y: {
+		  		urls: 'sounds/flash-1.mp3',
+				color: '#16a085'
+			},
+			u: {
+		  		urls: 'sounds/flash-2.mp3',
+				color: '#27ae60'
+			},
+			i: {
+		  		urls: 'sounds/flash-3.mp3',
+				color: '#2980b9'
+			},
+			o: {
+				urls: 'sounds/glimmer.mp3',
+				color: '#8e44ad'
+			},
+			p: {
+		  		urls: 'sounds/moon.mp3',
+				color: '#2c3e50'
+			},
+			a: {
+		  		urls: 'sounds/pinwheel.mp3',
+				color: '#f1c40f'
+			},
+			s: {
+		  		urls: 'sounds/piston-1.mp3',
+				color: '#e67e22'
+			},
+			d: {
+		  		urls: 'sounds/piston-2.mp3',
+				color: '#e74c3c'
+			},
+			f: {
+		  		urls: 'sounds/prism-1.mp3',
+				color: '#95a5a6'
+			},
+			g: {
+		  		urls: 'sounds/prism-2.mp3',
+				color: '#f39c12'
+			},
+			h: {
+		  		urls: 'sounds/prism-3.mp3',
+				color: '#d35400'
+			},
+			j: {
+		  		urls: 'sounds/splits.mp3',
+				color: '#1abc9c'
+			},
+			k: {
+		  		urls: 'sounds/squiggle.mp3',
+				color: '#2ecc71'
+			},
+			l: {
+		  		urls: 'sounds/strike.mp3',
+				color: '#3498db'
+			},
+			z: {
+		  		urls: 'sounds/suspension.mp3',
+				color: '#9b59b6'
+			},
+			x: {
+		  		urls: 'sounds/timer.mp3',
+				color: '#34495e'
+			},
+			c: {
+		  		urls: 'sounds/ufo.mp3',
+				color: '#16a085'
+			},
+			v: {
+		  		urls: 'sounds/veil.mp3',
+				color: '#27ae60'
+			},
+			b: {
+		  		urls: 'sounds/wipe.mp3',
+				color: '#2980b9'
+			},
+			n: {
+				urls: 'sounds/zig-zag.mp3',
+				color: '#8e44ad'
+			},
+			m: {
+		  		urls: 'sounds/moon.mp3',
+				color: '#2c3e50'
+			}
+			
+		};
+
+		var shapes = [];	
+
+
+		function onKeyDown(event) {
+			if(keyData[event.key]) {
+				//generate random point based on view size
+				var point = new Point(view.size.width, view.size.height) * Point.random();
+				var selector = Math.floor(Math.random() * 3);
+				if(selector === 0) {
+					//generate and color pentagon
+					var pentagon = new Path.RegularPolygon(new Point(point), 5, 5);
+					pentagon.fillColor = [keyData[event.key].color];
+					pentagon.selected = true;
+					
+					//add sound 
+					var sound = new Howl({
+			      	src: [keyData[event.key].urls]
+			    	});
+					sound.play();
+
+					shapes.push(pentagon);
+				}
+				else if(selector === 1) {
+					//generate and color circle
+					var myCircle = new Path.Circle(point, 3);
+					myCircle.fillColor = [keyData[event.key].color];
+					
+					//add sound 
+					var sound = new Howl({
+			      	src: [keyData[event.key].urls]
+			    	});
+					sound.play();
+
+					shapes.push(myCircle);
+				}
+				else if (selector === 2) {
+					// generate and color triangle 
+					var triangle = new Path.RegularPolygon(new Point(point), 3, 5);
+					triangle.fillColor = [keyData[event.key].color];
+					triangle.selected = true;
+
+					//add sound 
+					var sound = new Howl({
+			      	src: [keyData[event.key].urls]
+			    	});
+					sound.play();
+
+					shapes.push(triangle);
+				}
+			}
+		}
+
+		function onFrame(event) {
+			for(i = 0; i < shapes.length; i++) {
+				//downsize shapes, change their color, and rotate polygons
+				shapes[i].scale(1.06);
+				shapes[i].fillColor.hue += 3;
+				shapes[i].rotate(10);
+					//clear array
+					if(shapes[i].area > 50000) {
+						shapes[i].remove();
+						shapes.splice(i, 1);
+					}
+			}
+		}
+	</script>
+</head>
+<body>
+
+<canvas id="myCanvas" resize></canvas>
+
+</body>
+</html>
