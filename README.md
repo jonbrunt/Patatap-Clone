@@ -1,1 +1,2 @@
+# Patatap Clone
 A basic Patatap clone inspired by an assignment from Colt Steele's The Web Develper Bootcamp, reverse engineering his final product in my own code, and adding randomization of multiple, random shapes utilizing paper.js. Requires a keyboard for functionality, in a desktop browser. All 26 letter keys produce a unique sound and a random rotating object (circles, triangles, and polygons).
